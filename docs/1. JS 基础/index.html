@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      table,
+      th,
+      td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      h2 {
+        text-align: center;
+      }
+      table {
+        text-align: center;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>订单确认</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>商品名称</th>
+          <th>商品单价</th>
+          <th>购买数量</th>
+          <th>总价</th>
+          <th>收货地址</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>小米14</td>
+          <td id="price"></td>
+          <td id="nums"></td>
+          <td id="total"></td>
+          <td id="address"></td>
+        </tr>
+      </tbody>
+    </table>
+    <script>
+      let price = +prompt("请输入商品价格");
+      let nums = +prompt("请输入商品数量");
+      let address = prompt("请输入收货地址");
+      let total = price * nums;
+
+      document.getElementById("price").textContent = price;
+      document.getElementById("nums").textContent = nums;
+      document.getElementById("total").textContent = total;
+      document.getElementById("address").textContent = address;
+    </script>
+  </body>
+</html>
