@@ -63,14 +63,6 @@ cat2.meow();           // 输出: 我叫 花花，喵~
 **总结一下：**
 构造函数就是一个模板。`new` + `构造函数` 这个组合，就是JS里创建特定类型对象实例的经典方式。它解决了“重复创建相似对象”的问题。
 
-好的，面试官您好。
-
-是的，我了解JS中的构造函数。它在JavaScript中是一个非常基础且重要的概念，特别是在涉及到面向对象编程时。
-
-根据我的理解，构造函数本质上是一个普通的函数，但它的特殊之处在于我们如何使用它。 通常，我们会使用 `new` 关键字来调用一个函数，当这么做的时候，这个函数就扮演了“构造函数”的角色。
-
-**构造函数的主要作用是创建和初始化对象**。 当我们需要创建多个具有相同属性和方法的类似对象时，构造函数就非常有用，它可以作为对象的模板，避免了代码的重复。
-
 一个典型的构造函数有以下几个特点：
 
 *   **命名约定**：按照惯例，构造函数的函数名首字母会大写，以此来和普通函数进行区分。
@@ -82,7 +74,7 @@ cat2.meow();           // 输出: 我叫 花花，喵~
     4.  执行构造函数内部的代码，为新对象添加属性和方法。
     5.  如果函数没有显式地返回其他对象，那么这个新创建的对象会被自动返回。
 
-给您举一个简单的例子：
+举一个简单的例子：
 
 ```javascript
 function Person(name, age) {
@@ -107,10 +99,6 @@ console.log(person1 instanceof Person); // true
 在这个例子中，`Person` 就是一个构造函数。通过 `new Person()`，我们创建了两个独立的 `Person` 实例，每个实例都有自己独立的 `name` 和 `age` 属性。
 
 总的来说，构造函数是JavaScript实现面向对象编程的一种核心方式（在ES6的 `class` 语法出现之前尤为如此），它为我们提供了一种高效、可复用的方式来创建和组织对象。
-
-您提的这个问题非常好，这正好是JavaScript在面向对象编程方面一个非常核心的演进。
-
-ES6 `class` 语法的出现，可以说是在保留JavaScript核心机制不变的前提下，对构造函数和原型继承模式做了一次非常彻底和友好的“包装”。
 
 可以总结为以下几点变化：
 
@@ -304,118 +292,12 @@ class Person {
    * 如果构造函数里没有手动 `return` 一个其他对象，那么 `new` 命令会自动 `return` 这个已经加工好的新对象（也就是 `newObject`）。
    * 最终，`cat1` 变量就接收到了这个包含了 `name` 和 `age` 属性的新对象。
 
-**生活化比喻：DIY电脑**
-你拿着一份“电脑组装说明书”（构造函数 `Cat`）。
-
-1. **第一步：** 你拿出一个空的电脑机箱 (`new` 创建空对象)。
-2. **第二步：** 你心里清楚，这台电脑以后要能装Windows系统（将机箱和“标准PC规范”`prototype` 关联起来）。
-3. **第三步：** 你打开说明书，按照指示，把CPU、内存条、硬盘（`name`, `age`等参数）装进机箱里（执行构造函数，`this` 就是机箱）。
-4. **第四步：** 盖上机箱盖，一台完整的电脑组装好了，可以拿去用了（`return` 这个新对象）。
-
 **总结一下：**
 `new` 不仅仅是“创建”，它是一个包含**创建空对象、链接原型、执行构造、返回对象**的完整流程。
 
-面试官您好，是的，我非常了解 `new` 操作符的执行过程。这是一个在JavaScript面试中非常经典的问题，因为它能很好地考察面试者对 `this`、原型和对象创建这些核心概念的理解深度。
+## 原型继承
 
-当我们在代码中写下 `const instance = new Constructor(arg1, arg2);` 时，JavaScript引擎在背后会按照以下**四个核心步骤**来执行：
-
----
-
-**第一步：创建一个新的空对象**
-
-首先，`new` 操作符会在内存中创建一个全新的、空的JavaScript对象。
-
-```javascript
-// 伪代码
-const obj = {};
-```
-
-**第二步：链接到原型**
-
-这个新创建的空对象的内部 `[[Prototype]]` 属性（在浏览器中通常可以通过 `__proto__` 访问）会被设置为构造函数的 `prototype` 对象。这一步是实现方法共享和原型链继承的关键。
-
-```javascript
-// 伪代码
-obj.__proto__ = Constructor.prototype;
-```
-这样，新实例 `obj` 就可以访问到定义在 `Constructor.prototype` 上的所有属性和方法了。
-
-**第三步：绑定 `this` 并执行构造函数**
-
-接下来，构造函数 `Constructor` 会被调用。在调用时，函数内部的 `this` 关键字会被**绑定**到第一步创建的那个新对象上。构造函数中的代码（例如 `this.name = name;`）会为这个新对象添加属性。
-
-```javascript
-// 伪代码
-// 使用 .call 或 .apply 来改变 this 的指向并执行函数
-Constructor.call(obj, arg1, arg2);
-```
-
-**第四步：返回新对象（或指定对象）**
-
-最后，在构造函数执行完毕后，会进行返回操作。这里有一个重要的规则：
-
-*   **默认情况**：如果构造函数中**没有**显式地使用 `return` 语句，或者 `return` 返回的是一个**非对象类型**的值（如 `string`, `number`, `boolean`, `null`, `undefined`），那么 `new` 操作符会自动地、**隐式地**返回我们在第一步创建的那个新对象。
-
-*   **特殊情况**：如果构造函数中**显式地** `return` 了一个**对象**（包括普通对象、数组、函数等），那么 `new` 操作符将**不会**返回第一步创建的新对象，而是直接返回这个被显式 `return` 的对象。
-
----
-
-**举例说明**
-
-让我们用一个例子来串联起这四个步骤：
-
-```javascript
-function Car(make, model) {
-  this.make = make;
-  this.model = model;
-  // 假设这里没有 return 语句
-}
-
-Car.prototype.displayInfo = function() {
-  console.log(`这是一辆${this.make}品牌的${this.model}。`);
-};
-
-// 执行 new Car('特斯拉', 'Model 3');
-const myCar = new Car('特斯拉', 'Model 3');
-```
-
-这个过程是这样的：
-
-1.  **创建**：`new` 创建了一个空对象，我们叫它 `carInstance`。 `// const carInstance = {};`
-2.  **链接**：`carInstance` 的原型被链接到 `Car.prototype`。 `// carInstance.__proto__ = Car.prototype;`
-3.  **执行**：`Car` 函数被调用，`this` 指向 `carInstance`。函数执行后，`carInstance` 变成 `{ make: '特斯拉', model: 'Model 3' }`。
-4.  **返回**：`Car` 函数没有显式的 `return` 语句，所以 `new` 操作符自动返回 `carInstance` 对象。最终，这个对象被赋值给了 `myCar`。
-
-所以，当我调用 `myCar.displayInfo()` 时，`myCar` 自身没有这个方法，它会顺着原型链找到 `Car.prototype` 上的 `displayInfo` 方法并成功执行。
-
-为了更深刻地展示我的理解，我们甚至可以手动实现一个函数来模拟 `new` 的行为：
-
-```javascript
-function myNew(Constructor, ...args) {
-  // 1. 创建一个新对象，并链接到构造函数的原型
-  const obj = Object.create(Constructor.prototype);
-
-  // 2. 绑定 this 并执行构造函数
-  const result = Constructor.apply(obj, args);
-
-  // 3. 根据构造函数的返回值决定最终的返回值
-  // 如果 result 是一个对象，就返回 result，否则返回新创建的 obj
-  return result instanceof Object ? result : obj;
-}
-
-// 使用我们模拟的 myNew
-const myCar2 = myNew(Car, '比亚迪', '汉');
-myCar2.displayInfo(); // 输出: 这是一辆比亚迪品牌的汉。
-console.log(myCar2 instanceof Car); // true
-```
-
-这个 `myNew` 函数就完整地模拟了 `new` 操作符的内部执行流程。
-
-以上就是我对于`new`实例化执行过程的理解。
-
-#### 原型继承
-
-好的，面试官。原型继承是 JavaScript 中最核心、也是最具特色的一个概念。它解释了 JavaScript 对象之间是如何共享属性和方法的，是整个语言面向对象系统的基石。
+原型继承是 JavaScript 中最核心、也是最具特色的一个概念。它解释了 JavaScript 对象之间是如何共享属性和方法的，是整个语言面向对象系统的基石。
 
 与传统的“类式继承”（Classical Inheritance，如 Java 或 C++）不同，JavaScript 没有真正的类。JavaScript 的继承是**基于原型（Prototype）的继承**。
 
@@ -653,128 +535,11 @@ console.log(dog1.__proto__ === Dog.prototype); // true
 
 简单来说，`prototype` 是“生的那一方”定义的规则，而 `__proto__` 是“生出来的那一方”持有的、指向规则的链接。
 
-好的，面试官。原型继承是 JavaScript 中最核心、也是最具特色的一个概念。它解释了 JavaScript 对象之间是如何共享属性和方法的，是整个语言面向对象系统的基石。
-
-与传统的“类式继承”（Classical Inheritance，如 Java 或 C++）不同，JavaScript 没有真正的类。JavaScript 的继承是**基于原型（Prototype）的继承**。
-
-简单来说，**原型继承的核心思想是：当一个对象需要一个属性或方法时，如果它自身没有，它会去它的“原型”对象上寻找。如果原型对象上也没有，它会再去原型的“原型”上寻找，以此类推，直到找到为止，或者找到原型链的终点 `null`。**
-
-这个由对象的内部原型（`__proto__`）链接起来的查找路径，就叫做 **原型链（Prototype Chain）**。
+**原型继承的核心思想是：当一个对象需要一个属性或方法时，如果它自身没有，它会去它的“原型”对象上寻找。如果原型对象上也没有，它会再去原型的“原型”上寻找，以此类推，直到找到为止，或者找到原型链的终点 `null`。**
 
 ---
 
-### 它是如何工作的？
-
-1.  **每个对象都有一个原型**：几乎所有的 JavaScript 对象在创建时，都会关联到另一个对象，这个被关联的对象就是它的“原型”。这个关联是通过内部属性 `[[Prototype]]`（在浏览器中通常暴露为 `__proto__`）实现的。
-
-2.  **属性查找机制**：当我们试图访问一个对象的属性时（例如 `obj.myProperty`），JavaScript 引擎会：
-    a.  首先在 `obj` 对象自身上查找 `myProperty`。
-    b.  如果找到，就返回其值。
-    c.  如果没找到，就通过 `obj.__proto__` 链接，去它的原型对象上查找 `myProperty`。
-    d.  如果原型对象上找到了，就返回其值。
-    e.  如果还没找到，就继续沿着原型对象的 `__proto__` 向上查找，重复这个过程。
-    f.  这个查找过程会一直持续到原型链的顶端——`Object.prototype` 的原型是 `null`。如果到 `null` 还没找到，就返回 `undefined`。
-
----
-
-### 如何实现原型继承？
-
-在 ES6 的 `class` 语法出现之前，我们通常需要手动设置原型链来实现继承。最标准和推荐的方式是使用 `Object.create()`。
-
-让我们用一个经典的例子来说明：
-
-```javascript
-// 1. 创建一个 "父构造函数" Animal
-function Animal(name) {
-  this.name = name;
-}
-
-// 在 Animal 的原型上添加一个共享方法
-Animal.prototype.eat = function() {
-  console.log(this.name + " 正在吃东西。");
-};
-
-// 2. 创建一个 "子构造函数" Dog
-function Dog(name, breed) {
-  // 继承父构造函数的属性 (调用父构造函数，并将 this 指向当前 Dog 实例)
-  Animal.call(this, name);
-  this.breed = breed;
-}
-
-// 3. 实现继承的关键步骤！
-// 创建一个新对象，该对象的原型指向 Animal.prototype，
-// 然后将这个新对象作为 Dog 的原型。
-// 这样就建立了 Dog.prototype 到 Animal.prototype 的链接。
-Dog.prototype = Object.create(Animal.prototype);
-
-// 4. 修复构造函数指向 (一个好习惯)
-// 因为上一步重写了 Dog.prototype，它的 constructor 属性现在指向了 Animal，我们需要把它指回 Dog。
-Dog.prototype.constructor = Dog;
-
-
-// 在 Dog 的原型上添加它自己的方法
-Dog.prototype.bark = function() {
-  console.log("汪汪汪！");
-};
-
-
-// 5. 创建实例并测试
-const myDog = new Dog("旺财", "哈士奇");
-
-myDog.eat();  // 输出: 旺财 正在吃东西。 (从 Animal.prototype 继承而来)
-myDog.bark(); // 输出: 汪汪汪！ (Dog 自己的原型方法)
-
-console.log(myDog instanceof Dog);    // true
-console.log(myDog instanceof Animal); // true，这证明了继承关系是成立的
-```
-
-在这个例子中，`myDog` 的原型链是这样的：
-`myDog` -> `Dog.prototype` -> `Animal.prototype` -> `Object.prototype` -> `null`
-
-当调用 `myDog.eat()` 时，`myDog` 自身没有 `eat` 方法，于是顺着原型链找到了 `Dog.prototype`，发现也没有，再继续向上找到了 `Animal.prototype`，成功找到了 `eat` 方法并执行。
-
----
-
-### 与 ES6 `class` 的关系
-
-您之前提到的 ES6 `class` 语法，实际上就是对原型继承的一种封装，是一个语法糖。
-
-上面那段复杂的继承代码，用 `class` 可以写成这样：
-
-```javascript
-class Animal {
-  constructor(name) {
-    this.name = name;
-  }
-
-  eat() {
-    console.log(this.name + " 正在吃东西。");
-  }
-}
-
-class Dog extends Animal {
-  constructor(name, breed) {
-    super(name); // 相当于 Animal.call(this, name)
-    this.breed = breed;
-  }
-
-  bark() {
-    console.log("汪汪汪！");
-  }
-}
-
-const myDog = new Dog("旺财", "哈士奇");
-myDog.eat();
-myDog.bark();
-```
-
-`extends` 关键字自动完成了我们之前手动做的所有事情：设置原型链（`Object.create()`）、关联父类构造函数（`super()`）等。虽然语法变了，但其**底层实现的核心机制，依然是原型继承和原型链**。
-
-总而言之，原型继承是 JavaScript 的根基，它通过原型链机制实现了对象间的行为共享，是理解 JavaScript 这门语言如何工作的关键所在。
-
----
-
-### 13. 实例成员和静态成员
+## 13. 实例成员和静态成员
 
 这个概念区分了什么是“个人财产”，什么是“集体财产”。
 
@@ -950,7 +715,7 @@ Cat.sayFamily();         // 输出: 我们都属于猫科动物
 
 ---
 
-### 14. 基本包装类型 (Primitive Wrapper Types)
+## 14. 基本包装类型 (Primitive Wrapper Types)
 
 这是一个JS为了让你方便而设计的“隐身仆人”。
 
@@ -1010,58 +775,6 @@ if (badString) { // 作为对象，它永远是 true
 
 **核心概念是：JavaScript 为了方便我们操作基本数据类型（Primitives），在后台提供了一种临时的“对象化”包装。**
 
-我们知道，JavaScript 有 7 种基本数据类型：`String`, `Number`, `Boolean`, `BigInt`, `Symbol`, `null` 和 `undefined`。这些基本类型本身不是对象，所以按理说它们不应该有属性和方法（比如 `.length` 或 `.toUpperCase()`）。
-
-但我们在实际开发中，却可以这样做：
-
-```javascript
-let myString = "hello world";
-console.log(myString.length); // 11
-console.log(myString.toUpperCase()); // "HELLO WORLD"
-
-let myNumber = 123.456;
-console.log(myNumber.toFixed(2)); // "123.46"
-```
-
-这种现象之所以能发生，就是因为“基本包装类型”在起作用。
-
----
-
-### 背后的工作流程
-
-当我们试图在一个基本类型的值上访问属性或调用方法时，JavaScript 引擎会在后台**偷偷地**、**临时地**完成以下三个步骤：
-
-1.  **创建包装对象**：根据基本类型的值，创建一个对应的基本包装类型的实例。
-    *   对于字符串，会创建 `new String(value)`。
-    *   对于数字，会创建 `new Number(value)`。
-    *   对于布尔值，会创建 `new Boolean(value)`。
-
-2.  **执行操作**：在新创建的临时对象上执行属性访问或方法调用。
-
-3.  **销毁临时对象**：操作执行完毕后，这个临时创建的包装对象会立即被销毁。
-
-我们用 `myString.toUpperCase()` 来分解这个过程：
-
-```javascript
-// 1. 当我们写下这行代码时
-let myString = "hello world";
-let upperString = myString.toUpperCase();
-
-// 2. JavaScript 引擎在后台的实际操作（伪代码）
-// (1) 创建一个 String 类型的实例
-let tempWrapper = new String(myString);
-// (2) 在这个临时实例上调用方法
-let result = tempWrapper.toUpperCase();
-// (3) 销毁这个临时实例
-tempWrapper = null;
-// (4) 将结果返回
-upperString = result;
-```
-
-正是因为这个后台的自动包装和销毁机制，我们才能用一种看似面向对象的方式去操作基本数据类型，这极大地提升了开发的便利性。
-
----
-
 ### 一个经典的“陷阱”或“考点”
 
 这个“临时性”也导致了一个非常经典的问题：**我们无法为基本类型添加自定义属性和方法**。
@@ -1087,11 +800,9 @@ console.log(s1.color); // undefined
 *   这个过程是**临时的**，导致了我们不能给基本类型动态添加属性。
 *   在实际开发中，我们应该**避免**直接使用 `new String()`、`new Number()` 或 `new Boolean()` 来创建对象，因为这会产生一个类型为 `object` 的包装对象，容易在类型判断时（如 `typeof`）造成混淆和错误。我们应该直接使用字面量 `''`, `123`, `true` 来创建基本类型的值。
 
-以上就是我对基本包装类型的理解。
-
 ---
 
-### 15. Object 的静态方法
+## 15. Object 的静态方法
 
 `Object` 是所有对象的“老祖宗”，它本身也提供了一系列非常有用的“工具函数”（静态方法），来帮助我们更好地操作任何对象。
 
@@ -1177,10 +888,6 @@ console.log(user); // 输出: { name: "张三" } (毫无变化)
 
 **总结一下：**
 `Object` 的静态方法是JS内置的、非常强大的对象工具箱。`keys`, `values`, `entries` 用于遍历，`assign` 用于合并，`freeze` 用于保护数据。熟练使用它们能让你的代码更简洁、更强大。
-
----
-
-好的，面试官您好。
 
 `Object` 的静态方法是指那些直接挂载在 `Object` 构造函数上，而不是挂载在对象实例上的方法。我们不需要创建一个对象实例，而是直接通过 `Object.methodName()` 的形式来调用它们。这些方法通常提供了一些对对象进行底层操作、检查或转换的工具性功能。
 

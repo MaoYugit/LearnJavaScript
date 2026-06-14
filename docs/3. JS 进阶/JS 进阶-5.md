@@ -8,7 +8,7 @@
 </div>
 
 
-### 21. 原型对象 `prototype`
+## 21. 原型对象 `prototype`
 
 #### 核心思想
 
@@ -72,7 +72,7 @@ console.log(cat1.species === cat2.species); // true!
 
 ---
 
-### 22. `constructor` 属性以及应用
+## 22. `constructor` 属性以及应用
 
 #### 核心思想
 
@@ -160,7 +160,7 @@ console.log(dog2.constructor === Dog); // true! 问题解决。
 
 ---
 
-### 23. 对象原型 `__proto__`
+## 23. 对象原型 `__proto__`
 
 `prototype` 是挂在**构造函数**上的，而 `__proto__` (前后各有两个下划线) 是挂在**每个实例对象**上的。
 
@@ -218,7 +218,7 @@ console.log(cat1.__proto__ === Cat.prototype); // true!
 
 ---
 
-### 24. 原型继承
+## 24. 原型继承
 
 这是JS在 `class` 出现之前实现继承的经典方式。
 
@@ -279,7 +279,7 @@ JS的原型继承组合了**构造函数借用**（继承实例属性）和**原
 
 ---
 
-### 25. 原型链 (Prototype Chain) 和 `instanceof`
+## 25. 原型链 (Prototype Chain) 和 `instanceof`
 
 #### 核心思想
 
@@ -353,4 +353,3 @@ console.log(myCat instanceof Dog);      // false (因为 Dog.prototype 不在 my
   <a href="./JS 进阶-3.md">‹ 上一篇：JS进阶-4</a>
   <a href="./JS 进阶-6.md">下一篇：JS进阶-6 ›</a>
 </div>
-
